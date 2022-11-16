@@ -34,7 +34,7 @@ This repo helps you to get started with ExpressJs in docker Environment.
 Clone the project
 
 ```bash
-  git clone https://github.com/bhimrazy/express-app-with-docker-setup
+  git clone https://github.com/MaxSyos/Backend_Docker_CRUD_Template.git
 ```
 
 Go to the project directory
@@ -62,8 +62,5 @@ Start the server
 [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)
 
   
-## License
-
-[MIT](https://github.com/bhimrazy/express-app-with-docker-setup/blob/master/LICENSE)
 
   
