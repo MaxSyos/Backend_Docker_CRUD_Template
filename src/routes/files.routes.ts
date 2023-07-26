@@ -7,6 +7,6 @@ const fileRoutes = Router();
 
 const createFile = new CreateFileController();
 
-fileRoutes.post("/", uploadMiddleware /* createFile.handle */);
+fileRoutes.post("/", uploadMiddleware, createFile.handle  );
 
 export { fileRoutes };

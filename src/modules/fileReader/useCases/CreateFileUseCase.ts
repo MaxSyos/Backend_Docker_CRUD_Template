@@ -12,32 +12,17 @@ class CreateFileUseCase {
   ) {}
 
   async execute({id, matricula, nome, dataCobranca, valor}: ICreateFilesDTO) {
-    await this.fileRepository.create({id, matricula, nome, dataCobranca, valor});
-  }
-
-  async processCSVFile(file) {
-    const { buffer } = file;
-
-    const readableFile = new Readable();
-    readableFile.push(buffer);
-    readableFile.push(null);
-
-    const bookFile = readLine.createInterface({
-      input: readableFile,
+    const file = await this.fileRepository.create({
+      id, 
+      matricula, 
+      nome, 
+      dataCobranca, 
+      valor
     });
 
-    for await (let line of bookFile) {
-      const bookLineSplit = line.split(";");
-      await this.fileRepository.create({
-        id: bookLineSplit[0],
-        matricula: bookLineSplit[1],
-        nome: bookLineSplit[2],
-        dataCobranca: bookLineSplit[3],
-        valor: Number(bookLineSplit[4]),
-      });
-    }
-    console.log(bookFile)
+    return file;
   }
+
 }
 
 export { CreateFileUseCase };

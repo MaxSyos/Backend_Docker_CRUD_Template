@@ -3,10 +3,13 @@ import { Readable } from "stream"
 import readLine from "readline";
 import XLSX from "xlsx";
 import { ICreateFilesDTO } from "../../modules/fileReader/dtos/ICreateFilesDTO";
+import { processCSVFile } from "../utils/processCSVFile";
+import { processXLSXFile } from "../utils/processXLSXFile";
 
-const upload = multer();
 
-export const uploadMiddleware =  (req, res, next) => {
+const upload = multer({ dest: 'file'});
+
+export const uploadMiddleware = (req, res, next) => {
    upload.single('file') (req, res, async (err) => {
     if (err) {
       next(err);
@@ -17,6 +20,7 @@ export const uploadMiddleware =  (req, res, next) => {
       
       if (fileExtension === 'csv') {
         await processCSVFile(file);
+        console.log('esta rodando')
       } else if (fileExtension === 'xls' || fileExtension === 'xlsx') {
         await processXLSXFile(file);
       }
@@ -46,9 +50,9 @@ export const uploadMiddleware =  (req, res, next) => {
       console.log(book[1]);
       return res.json(book) */
       next();
-
+      return res.json(processCSVFile(file))
     }
-    });
+  });
 
     
     return uploadMiddleware;
@@ -57,7 +61,5 @@ export const uploadMiddleware =  (req, res, next) => {
 
 
 
-function processCSVFile(file: any) {
-  throw new Error("Function not implemented.");
-}
+
 
