@@ -6,10 +6,9 @@ import { IFilesRepository } from "../IFilesRepository";
 
 class FileRepository implements IFilesRepository {
 
-  async create({ id, matricula, nome, dataCobranca, valor }: ICreateFilesDTO): Promise<File> {
+  async create({  matricula, nome, dataCobranca, valor }: ICreateFilesDTO): Promise<File> {
     const file = await prismaClient.file.create({
       data: {
-        id,
         matricula,
         nome,
         dataCobranca,
@@ -26,7 +25,7 @@ class FileRepository implements IFilesRepository {
       },
     });
 
-    return file as File;
+    return file as File;5
   }
 
   async findById(id: string): Promise<File> {

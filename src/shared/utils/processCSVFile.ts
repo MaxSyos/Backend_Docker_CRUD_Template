@@ -18,14 +18,11 @@ export async function processCSVFile(file) {
     input: readableFile,
   });
   
-
-  const book: ICreateFilesDTO[] = []
   
   for await (let line of bookFile) {
     const bookLineSplit = line.split(';');
     
     await createFileUseCase.execute({
-      id: bookLineSplit[0],
       matricula: bookLineSplit[1],
       nome: bookLineSplit[2],
       dataCobranca: bookLineSplit[3],

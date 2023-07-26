@@ -15,7 +15,6 @@ export async function processXLSXFile(file) {
 
   for (const row of data) {
     await createFileUseCase.execute({
-      id: row['id'],
       matricula: row['matricula'],
       nome: row['nome'],
       dataCobranca: row['dataCobranca'],

@@ -11,9 +11,8 @@ class CreateFileUseCase {
     private fileRepository: IFilesRepository
   ) {}
 
-  async execute({id, matricula, nome, dataCobranca, valor}: ICreateFilesDTO) {
-    const file = await this.fileRepository.create({
-      id, 
+  async execute({matricula, nome, dataCobranca, valor}: ICreateFilesDTO) {
+    const file = await this.fileRepository.create({ 
       matricula, 
       nome, 
       dataCobranca, 
