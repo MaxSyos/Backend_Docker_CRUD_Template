@@ -15,3 +15,5 @@ userRoutes.post("/session", authenticateUser.handle);
 
 
 export { userRoutes };
+
+
