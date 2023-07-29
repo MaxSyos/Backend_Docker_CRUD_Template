@@ -1,24 +1,24 @@
 // processXLSXFile.js
+import { Readable } from 'stream';
 import xlsx from 'xlsx';
-import { container } from 'tsyringe';
-import { CreateFileUseCase } from '../../modules/fileReader/useCases/CreateFileUseCase';
 
-export async function processXLSXFile(file) {
-  const { buffer } = file;
+// This function is responsible for processing an XLSX file and returning an array of `ICreateFilesDTO` objects.
+export const processXLSXFile = async (readableFile: Readable) => {
+  const book = [];
 
-  const createFileUseCase = container.resolve(CreateFileUseCase);
+  const workbook = await xlsx.readFile(readableFile);
+  const sheet = workbook.Sheets[workbook.Sheets.length - 1];
 
-  const workbook = xlsx.read(buffer);
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  const data = xlsx.utils.sheet_to_json(worksheet);
+  for (const row of sheet.Rows) {
+    const bookLineSplit = row.getValues();
 
-  for (const row of data) {
-    await createFileUseCase.execute({
-      matricula: row['matricula'],
-      nome: row['nome'],
-      dataCobranca: row['dataCobranca'],
-      valor: Number(row['valor']),
+    book.push({
+      matricula: bookLineSplit[0],
+      nome: bookLineSplit[1],
+      dataCobranca: bookLineSplit[2],
+      valor: Number(bookLineSplit[3])
     });
   }
-}
+
+  return book;
+};

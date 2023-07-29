@@ -1,36 +1,35 @@
+import { Readable } from "stream";
+import { ICreateFilesDTO } from "../../modules/fileReader/dtos/ICreateFilesDTO";
+import readLine from "readline";
+import { container } from "tsyringe";
+import { CreateFileUseCase } from "../../modules/fileReader/useCases/CreateFileUseCase";
 
-import { Readable } from 'stream';
-import readLine from 'readline';
-import { container } from 'tsyringe';
-import { CreateFileUseCase } from '../../modules/fileReader/useCases/CreateFileUseCase';
-import { ICreateFilesDTO } from '../../modules/fileReader/dtos/ICreateFilesDTO';
+// This function is responsible for processing a CSV file and returning an array of `ICreateFilesDTO` objects.
+export const processCSVFile = async (readableFile: Readable) => {
+    
+  const bookFile = readLine.createInterface({
+        input: readableFile,
+    })
 
-export async function processCSVFile(file) {
-  const { buffer } = file;
+  const book: ICreateFilesDTO[] = [];
 
   const createFileUseCase = container.resolve(CreateFileUseCase);
 
-  const readableFile = new Readable();
-  readableFile.push(buffer);
-  readableFile.push(null);
-  
-  const bookFile = readLine.createInterface({
-    input: readableFile,
-  });
-  
-  
   for await (let line of bookFile) {
-    const bookLineSplit = line.split(';');
+    const bookLineSplit = line.split(";");
     
-    await createFileUseCase.execute({
+    const file = {
       matricula: bookLineSplit[1],
       nome: bookLineSplit[2],
       dataCobranca: bookLineSplit[3],
-      valor: Number(bookLineSplit[4]),
-    });
+      valor: parseFloat(bookLineSplit[4]),
+    };
     
+    book.push(file);
+    
+    await createFileUseCase.execute(file);
   }
-  console.log('console 2', )
+  console.log(book);
   
-  
-}
+  return book;
+};

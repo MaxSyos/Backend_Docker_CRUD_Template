@@ -27,7 +27,7 @@ model File {
     matricula    String
     nome         String
     dataCobranca String
-    valor        Decimal
+    valor        Float
     create_at    DateTime @default(now())
     update_at    DateTime @updatedAt
 
